@@ -1,5 +1,7 @@
+<!DOCTYPE html>
 <html>
 <head>
+<meta charset="utf-8"/>
 <title>salsamenteria</title>
 <script src="lib/jquery-3.3.1.min.js"></script>
 <script src="lib/jquery.playSound.js"></script>
@@ -52,13 +54,25 @@
     }
   }
 
+  function btn_playpause_click(btn) {
+      if (lud.is_playing()) {
+        lud.stop();
+        $(btn).val($(btn).data("playValue"));
+        $('#btn_ritmo').prop("disabled", true);
+      } else {
+        lud.start();
+        $(btn).val($(btn).data("pauseValue"));
+        $('#btn_ritmo').prop("disabled", false);
+      }
+  }
+
   $(document).ready(function() {
 
     var an = new Anoncilo(
       "sounds/",
       sounds_db,
-      4, // sur kiu bato anonci?
-      0.5 // ofteco ( 0 = neniam, 1 = ĉiam)
+      4, // on which beat announce
+      0.5 // density ( 0 = never, 1 = everytime)
     );
 
     lud = new Ludilo(
@@ -70,6 +84,20 @@
 
   });
 
+  // keyboard shortcuts
+  $(document).on("keydown", function(e){
+    if ($.inArray(e.keyCode, [27, 116, 190]) > -1) {
+      e.preventDefault();
+      // Escape, F5, full stop (.)
+      $('#btn_playpause').click();
+    } else if ($.inArray(e.keyCode, [34, 33]) > -1) {
+      // PageDown, PageUp
+      if (!$('#btn_ritmo').prop("disabled")) {
+        $('#btn_ritmo').click();
+      }
+    }
+  });
+
 </script>
 <style>
   @keyframes background_pulsate {
@@ -78,6 +106,7 @@
     100% { background-color: #c0c0c0; }
   }
   #btn_ritmo { width: 200px; height: 3em; font-weight: bold }
+  #btn_playpause { width: 50px; height: 3em }
   .measuring { animation: background_pulsate 2s infinite }
   .ritmero {
     float:left;
@@ -95,6 +124,7 @@
 </head>
 <body>
 <input id="btn_ritmo" type="button" value="Ritmo" onclick="btn_ritmo_click(this)"/>
+<input id="btn_playpause" type="button" data-play-value="▶" data-pause-value="▮▮" value="▮▮" onclick="btn_playpause_click(this)"/>
 
 <div id="div_log"></div>
 <div class="ritmero"></div>
