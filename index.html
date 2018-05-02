@@ -14,13 +14,13 @@
     { "src": "dame_-_mentira.mp3", "duration": 1, "probability": 1 },
     { "src": "dame.mp3", "duration": 1, "probability": 1 },
     { "src": "adios.mp3", "duration": 3, "probability": 1 },
-    { "src": "adios_con_la_hermana.mp3", "duration": 3, "probability": 1 },
-    { "src": "adios_para_el_medio.mp3", "duration": 3, "probability": 1 },
+    { "src": "adios_con_la_hermana.mp3", "duration": 4, "probability": 1 },
+    { "src": "adios_para_el_medio.mp3", "duration": 6, "probability": 1 },
     { "src": "banquito.mp3", "duration": 3, "probability": 1 },
     { "src": "ensxufle_complicada.mp3", "duration": 3, "probability": 1 },
     { "src": "ensxufle_doble.mp3", "duration": 3, "probability": 1 },
     { "src": "ensxufle.mp3", "duration": 3, "probability": 1 },
-    { "src": "ensxufle_triple.mp3", "duration": 3, "probability": 1 },
+    { "src": "ensxufle_triple.mp3", "duration": 6, "probability": 1 },
     { "src": "fly_doble.mp3", "duration": 1, "probability": 1 },
     { "src": "fly_linea_rolling.mp3", "duration": 1, "probability": 1 },
     { "src": "fly.mp3", "duration": 1, "probability": 1 },
@@ -34,10 +34,10 @@
     { "src": "rolling.mp3", "duration": 1, "probability": 1 },
     { "src": "rolling_triple.mp3", "duration": 1, "probability": 1 },
     { "src": "mi_pati_mi_pami.mp3", "duration": 3, "probability": 1 },
-    { "src": "pati_pami.mp3", "duration": 3, "probability": 1 },
-    { "src": "setenta.mp3", "duration": 3, "probability": 1 },
-    { "src": "sombrero.mp3", "duration": 3, "probability": 1 },
-    { "src": "uno.mp3", "duration": 3, "probability": 1 } 
+    { "src": "pati_pami.mp3", "duration": 5, "probability": 1 },
+    { "src": "setenta.mp3", "duration": 4, "probability": 1 },
+    { "src": "sombrero.mp3", "duration": 6, "probability": 1 },
+    { "src": "uno.mp3", "duration": 6, "probability": 1 } 
   ];
 
   var lud;
@@ -50,7 +50,11 @@
     } else {
       lud.ritmo.stopMeasuring();
       $(btn).removeClass("measuring");
-      lud.start();
+      if (!lud.is_playing()) {
+        $('#btn_playpause').click();
+      } else {
+        lud.start();
+      }
     }
   }
 
@@ -58,11 +62,9 @@
       if (lud.is_playing()) {
         lud.stop();
         $(btn).val($(btn).data("playValue"));
-        $('#btn_ritmo').prop("disabled", true);
       } else {
         lud.start();
         $(btn).val($(btn).data("pauseValue"));
-        $('#btn_ritmo').prop("disabled", false);
       }
   }
 
@@ -92,9 +94,7 @@
       $('#btn_playpause').click();
     } else if ($.inArray(e.keyCode, [34, 33]) > -1) {
       // PageDown, PageUp
-      if (!$('#btn_ritmo').prop("disabled")) {
-        $('#btn_ritmo').click();
-      }
+      $('#btn_ritmo').click();
     }
   });
 
@@ -124,7 +124,7 @@
 </head>
 <body>
 <input id="btn_ritmo" type="button" value="Ritmo" onclick="btn_ritmo_click(this)"/>
-<input id="btn_playpause" type="button" data-play-value="▶" data-pause-value="▮▮" value="▮▮" onclick="btn_playpause_click(this)"/>
+<input id="btn_playpause" type="button" data-play-value="▶" data-pause-value="▮▮" value="▶" onclick="btn_playpause_click(this)"/>
 
 <div id="div_log"></div>
 <div class="ritmero"></div>
