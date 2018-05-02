@@ -1,0 +1,109 @@
+<html>
+<head>
+<title>salsamenteria</title>
+<script src="lib/jquery-3.3.1.min.js"></script>
+<script src="lib/jquery.playSound.js"></script>
+<script src="lib/ludilo.js"></script>
+<script>
+  // List of sounds with duration and probability.
+  // the duration is the number of metres (rythm pattern) needed to complete the figure
+  // probability has not being implemented yet
+  var sounds_db = [
+    { "src": "dame_-_mentira.mp3", "duration": 1, "probability": 1 },
+    { "src": "dame.mp3", "duration": 1, "probability": 1 },
+    { "src": "adios.mp3", "duration": 3, "probability": 1 },
+    { "src": "adios_con_la_hermana.mp3", "duration": 3, "probability": 1 },
+    { "src": "adios_para_el_medio.mp3", "duration": 3, "probability": 1 },
+    { "src": "banquito.mp3", "duration": 3, "probability": 1 },
+    { "src": "ensxufle_complicada.mp3", "duration": 3, "probability": 1 },
+    { "src": "ensxufle_doble.mp3", "duration": 3, "probability": 1 },
+    { "src": "ensxufle.mp3", "duration": 3, "probability": 1 },
+    { "src": "ensxufle_triple.mp3", "duration": 3, "probability": 1 },
+    { "src": "fly_doble.mp3", "duration": 1, "probability": 1 },
+    { "src": "fly_linea_rolling.mp3", "duration": 1, "probability": 1 },
+    { "src": "fly.mp3", "duration": 1, "probability": 1 },
+    { "src": "fly_triple.mp3", "duration": 1, "probability": 1 },
+    { "src": "linea_doble.mp3", "duration": 1, "probability": 1 },
+    { "src": "linea_fly.mp3", "duration": 1, "probability": 1 },
+    { "src": "linea.mp3", "duration": 1, "probability": 1 },
+    { "src": "linea_triple.mp3", "duration": 1, "probability": 1 },
+    { "src": "rolling_doble.mp3", "duration": 1, "probability": 1 },
+    { "src": "rolling_fly.mp3", "duration": 1, "probability": 1 },
+    { "src": "rolling.mp3", "duration": 1, "probability": 1 },
+    { "src": "rolling_triple.mp3", "duration": 1, "probability": 1 },
+    { "src": "mi_pati_mi_pami.mp3", "duration": 3, "probability": 1 },
+    { "src": "pati_pami.mp3", "duration": 3, "probability": 1 },
+    { "src": "setenta.mp3", "duration": 3, "probability": 1 },
+    { "src": "sombrero.mp3", "duration": 3, "probability": 1 },
+    { "src": "uno.mp3", "duration": 3, "probability": 1 } 
+  ];
+
+  var lud;
+
+  function btn_ritmo_click(btn) {
+    if (!lud.ritmo.isMeasuring()) {
+      $(btn).addClass("measuring");
+      lud.stop();
+      lud.ritmo.startMeasuring();
+    } else {
+      lud.ritmo.stopMeasuring();
+      $(btn).removeClass("measuring");
+      lud.start();
+    }
+  }
+
+  $(document).ready(function() {
+
+    var an = new Anoncilo(
+      "sounds/",
+      sounds_db,
+      4, // sur kiu bato anonci?
+      0.5 // ofteco ( 0 = neniam, 1 = ĉiam)
+    );
+
+    lud = new Ludilo(
+      new Ritmo(2500),
+      $(".ritmero"),
+      "beaten",
+      an
+    );
+
+  });
+
+</script>
+<style>
+  @keyframes background_pulsate {
+    0% { background-color: #c0c0c0; }
+    50% { background-color: #ff0000; }
+    100% { background-color: #c0c0c0; }
+  }
+  #btn_ritmo { width: 200px; height: 3em; font-weight: bold }
+  .measuring { animation: background_pulsate 2s infinite }
+  .ritmero {
+    float:left;
+    margin: 5px;
+    border-radius: 100%;
+    background-color: #c0c0c0;
+    width:10px;
+    height:10px
+  }
+  .beaten {
+    background: red;
+  }
+  .ritmero.fantoma { display: none }
+</style>
+</head>
+<body>
+<input id="btn_ritmo" type="button" value="Ritmo" onclick="btn_ritmo_click(this)"/>
+
+<div id="div_log"></div>
+<div class="ritmero"></div>
+<div class="ritmero"></div>
+<div class="ritmero"></div>
+<div class="ritmero fantoma"></div>
+<div class="ritmero"></div>
+<div class="ritmero"></div>
+<div class="ritmero"></div>
+<div class="ritmero fantoma"></div>
+</body>
+</html>
